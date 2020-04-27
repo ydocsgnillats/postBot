@@ -6,6 +6,8 @@ import re
 import json
 import post
 
+from app import hello
+
 from prawcore import NotFound
 
 subreddits = []
@@ -23,8 +25,22 @@ reddit = login()
 
 class Bot:
 
-	title = "Nibiru - Septagan(2020)"
-	url = "https://www.youtube.com/watch?v=yT1QbKEXeSQ"
+	title = "1"
+	link = "2"
+
+	def getLink(self):
+		return Bot.link
+
+	def setLink(self, l):
+		Bot.link = "\""+l+"\""
+		print("Link set to: " + Bot.link)
+
+	def getTitle(self):
+		return Bot.title
+
+	def setTitle(self, t):
+		Bot.title = "\""+t+"\""
+		print("Title set to: " + Bot.title)
 
 	def post(self): 
 
@@ -32,14 +48,10 @@ class Bot:
 
 		for sub in subreddits:
 			try:
-				title = "Nibiru - Septagan [experimental]"
-				url = "https://www.youtube.com/watch?v=yT1QbKEXeSQ"
 				#try posting on subreddits listed
-				# try:
 				subreddit = reddit.subreddit(sub)
-				subreddit.submit(title, url = url)
+				subreddit.submit(Bot.title, url = Bot.link)
 				print("Posted to r/" + sub)
-				print("Done.")
 			except KeyboardInterrupt:
 				print('\n')
 				sys.exit(0)
@@ -59,6 +71,7 @@ class Bot:
 				errors = errors+1
 				if(errors >10):
 					print("Program Crashed")
+
 	def sub_exists(self, sub):
 		exists = True
 		try:
@@ -68,14 +81,18 @@ class Bot:
 		return exists
 
 	def popSubreddits(self,*argv):
-		#global subreddits
+		dne = False
+		dneString = "\nSubreddit(s) not found: "
 		for arg in argv:
-			#if Bot.sub_exists(arg):
-			subreddits.append(arg)
-			print("Added: r/" + arg + " to subreddit array.")
-			#else:
-			#	print("The subreddit " + arg + " does not exist.")
-
+			if (Bot.sub_exists(arg,arg)):
+				subreddits.append(arg)
+				print("Added: r/" + arg + " to subreddit array.")
+			else:
+				dne = True 
+				dneString+="\n 	" + arg
+		if (dne == True):
+			print(dneString + "\n")
+		
 	def clearSubreddits(self):
 		global subreddits
 		subreddits = []
@@ -85,7 +102,9 @@ def main():
     
 	b = Bot()
 	b.clearSubreddits()
-	b.popSubreddits("music", "atlantamusic","edmproduction","futurebeatproducers","indiemusicfeedback","lofihiphop","roastmytrack","promoteyourmusic","shareyourmusic","thisisourmusic","experimentalmusic","dub")
+	b.popSubreddits("music", "roastmytrack", "atlantamusic", "promoteyourmusic", "experimentalmusic", "shareyourmusic", "vaporwave")
+	b.setTitle("Test")
+	b.setLink("www.youtube.com")
 	b.post()
-    
+	
 main()
