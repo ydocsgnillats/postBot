@@ -4,9 +4,6 @@ import time
 import sys
 import re
 import json
-import post
-
-from app import hello
 
 from prawcore import NotFound
 
@@ -22,12 +19,13 @@ def login():
 pos = 0
 errors = 0
 reddit = login()
+dneString = " "
 
-class Bot:
+class Bot():
 
-	title = "1"
-	link = "2"
-
+	def getResults(self):
+		return dneString
+		
 	def getLink(self):
 		return Bot.link
 
@@ -81,17 +79,14 @@ class Bot:
 		return exists
 
 	def popSubreddits(self,*argv):
-		dne = False
+		global dneString
 		dneString = "\nSubreddit(s) not found: "
 		for arg in argv:
 			if (Bot.sub_exists(arg,arg)):
 				subreddits.append(arg)
-				print("Added: r/" + arg + " to subreddit array.")
 			else:
-				dne = True 
-				dneString+="\n 	" + arg
-		if (dne == True):
-			print(dneString + "\n")
+				dneString+="\n 	  " + arg + ", "
+		return dneString
 		
 	def clearSubreddits(self):
 		global subreddits
@@ -102,9 +97,8 @@ def main():
     
 	b = Bot()
 	b.clearSubreddits()
-	b.popSubreddits("music", "roastmytrack", "atlantamusic", "promoteyourmusic", "experimentalmusic", "shareyourmusic", "vaporwave")
+	b.popSubreddits("music", "rrrroastmytrack", "atlrrrantamusic", "promoteyourrrrmusic", "experimentalmusic", "shareyourmusic", "vaporwave")
 	b.setTitle("Test")
 	b.setLink("www.youtube.com")
-	b.post()
-	
-main()
+	print (b.getLink())
+	print (b.getTitle())
